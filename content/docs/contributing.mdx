@@ -395,8 +395,7 @@ describe('EmailList', () => {
 
 #### API Tests
 
-```typescript
-// __tests__/api/emails.test.ts
+```typescript title="__tests__/api/emails.test.ts"
 import { describe, it, expect, beforeEach } from 'vitest'
 import { testClient } from '@/test-utils/api-client'
 
@@ -429,8 +428,7 @@ describe('/api/emails', () => {
 
 #### E2E Tests
 
-```typescript
-// e2e/email-workflow.spec.ts
+```typescript title="e2e/email-workflow.spec.ts"
 import { test, expect } from '@playwright/test'
 
 test.describe('Email Workflow', () => {
@@ -510,7 +508,7 @@ docs/
 ### Before Submitting
 
 1. **Run Tests**
-   ```bash
+   ```bash title="Terminal"
    pnpm test
    pnpm test:e2e
    pnpm lint
@@ -518,7 +516,7 @@ docs/
    ```
 
 2. **Check Build**
-   ```bash
+   ```bash title="Terminal"
    pnpm build
    ```
 
@@ -536,7 +534,7 @@ docs/
 
 When creating a pull request, include:
 
-```markdown
+```markdown title="Markdown"
 ## Description
 Brief description of what this PR does.
 
@@ -588,7 +586,7 @@ Include screenshots for UI changes.
 
 Use the bug report template:
 
-```markdown
+```markdown title="Markdown"
 **Bug Description**
 A clear description of the bug.
 
@@ -618,7 +616,7 @@ Any other context about the problem.
 
 Use the feature request template:
 
-```markdown
+```markdown title="Markdown"
 **Feature Description**
 A clear description of the feature you'd like to see.
 
@@ -647,7 +645,7 @@ Any other context, screenshots, or examples.
 
 ### VS Code Extensions
 
-```json
+```json title=".vscode/extensions.json"
 {
   "recommendations": [
     "bradlc.vscode-tailwindcss",
@@ -663,7 +661,7 @@ Any other context, screenshots, or examples.
 
 ### Environment Variables
 
-```bash
+```bash title="Terminal"
 # Development environment
 NODE_ENV=development
 PORT=3000
