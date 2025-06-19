@@ -169,7 +169,6 @@ We use Zustand for lightweight, performant state management without the complexi
 </Callout>
 
 ```typescript title="store/mail-store.ts"
-// store/mail-store.ts
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
@@ -205,7 +204,6 @@ export const useMailStore = create<MailState>()(
 #### Component Architecture
 
 ```typescript title="components/mail/email-list.tsx"
-// components/mail/email-list.tsx
 import { memo } from 'react'
 import { useMailStore } from '@/store/mail-store'
 import { EmailListItem } from './email-list-item'
@@ -273,7 +271,6 @@ We use Drizzle ORM for type-safe database operations with excellent TypeScript i
 </Callout>
 
 ```typescript title="src/db/schema.ts"
-// src/db/schema.ts
 import { sqliteTable, text, integer, boolean } from 'drizzle-orm/sqlite-core'
 
 export const users = sqliteTable('users', {
@@ -314,7 +311,6 @@ export const attachments = sqliteTable('attachments', {
 #### API Routes
 
 ```typescript title="src/routes/mail.ts"
-// src/routes/mail.ts
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
@@ -365,7 +361,6 @@ The email processing system handles synchronization with email providers, parsin
 #### Email Sync Architecture
 
 ```typescript title="src/services/email-sync-service.ts"
-// src/services/email-sync-service.ts
 import { ImapFlow } from 'imapflow'
 import { parseEmail } from '../utils/email-parser'
 import { db } from '../db'
@@ -433,7 +428,6 @@ We use Better Auth for modern, secure authentication with social providers and s
 #### Better Auth Integration
 
 ```typescript title="src/auth/config.ts"
-// src/auth/config.ts
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { db } from "../db"
@@ -680,7 +674,6 @@ Comprehensive monitoring ensures system reliability and helps with proactive iss
 ### Application Monitoring
 
 ```typescript title="src/utils/monitoring.ts"
-// src/utils/monitoring.ts
 import { Sentry } from '@sentry/node'
 
 export const monitoring = {
