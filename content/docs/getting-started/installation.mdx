@@ -151,13 +151,17 @@ OPENAI_API_KEY=your-openai-api-key
 
 ### 3. Database Setup Options
 
-#### Option A: SQLite (Default)
-```bash title="SQLite Setup"
-# No additional setup required
-# Database file will be created automatically
+#### Option A: Docker PostgreSQL (Recommended)
+```bash title="Docker Database Setup"
+# Start PostgreSQL database with Docker Compose
+docker-compose -f docker-compose.db.yaml up -d
 ```
 
-#### Option B: PostgreSQL
+<Callout type="info">
+This is the recommended setup as it includes PostgreSQL, Redis/Valkey, and other required services.
+</Callout>
+
+#### Option B: Local PostgreSQL
 ```bash title="PostgreSQL Setup"
 # Install PostgreSQL
 brew install postgresql  # macOS
@@ -171,10 +175,11 @@ sudo systemctl start postgresql  # Ubuntu
 createdb zero_dev
 ```
 
-#### Option C: Docker Database
-```bash title="Docker Database Setup"
-# Start database with Docker Compose
-docker-compose -f docker-compose.db.yaml up -d
+#### Option C: SQLite (Development Only)
+```bash title="SQLite Setup"
+# SQLite can be used for quick development
+# Database file will be created automatically
+# Note: Some features may not work with SQLite
 ```
 
 ## Installation Steps
@@ -198,17 +203,76 @@ pnpm db:generate
 pnpm db:migrate
 ```
 
-### 4. Seed Database (Optional)
-
-```bash title="Seed Database"
-pnpm db:seed
-```
-
-### 5. Start Development Server
+### 4. Start Development Server
 
 ```bash title="Start Development Server"
-pnpm dev
+# Quick start (starts database + dev servers)
+pnpm go
+
+# Or start manually
+pnpm docker:db:up  # Start database first
+pnpm dev          # Then start dev servers
 ```
+
+<Callout type="tip">
+**Quick Start**: Use `pnpm go` to automatically start the database and development servers in one command.
+</Callout>
+
+## nizzy CLI Tool
+
+Zero Email Client includes a powerful CLI tool called `nizzy` for project management and synchronization.
+
+### Installation
+
+The nizzy CLI is included as part of the project dependencies and is available after running `pnpm install`.
+
+### Usage
+
+<Tabs items={['Available Commands', 'Common Usage', 'Interactive Mode']}>
+  <Tab value="Available Commands">
+    ```bash title="nizzy CLI Commands"
+    # Synchronize environment and types
+    pnpm nizzy sync
+    
+    # Fix environment variable issues
+    pnpm nizzy fix-env
+    
+    # Reinstall node modules cleanly
+    pnpm nizzy reinstall-node-modules
+    
+    # Show help and available commands
+    pnpm nizzy --help
+    ```
+  </Tab>
+  <Tab value="Common Usage">
+    ```bash title="Typical Workflow"
+    # After cloning the repository
+    pnpm install
+    pnpm nizzy sync  # Automatically runs after install
+    
+    # When environment issues occur
+    pnpm nizzy fix-env
+    
+    # When dependencies are corrupted
+    pnpm nizzy reinstall-node-modules
+    ```
+  </Tab>
+  <Tab value="Interactive Mode">
+    ```bash title="Interactive CLI"
+    # Run without arguments for interactive mode
+    pnpm nizzy
+    
+    # Select from available options:
+    # - Sync your environment variables and types
+    # - Fix environment variable issues  
+    # - Reinstall node modules cleanly
+    ```
+  </Tab>
+</Tabs>
+
+<Callout type="tip">
+The nizzy CLI tool is essential for keeping your development environment synchronized and up-to-date.
+</Callout>
 
 ## Platform-Specific Instructions
 
@@ -303,8 +367,8 @@ pnpm dev
 # Open database studio
 pnpm db:studio
 
-# Check if migrations ran successfully
-pnpm db:status
+# Check database with studio interface
+# Studio will open at http://localhost:4983
 ```
 
 ## Troubleshooting
@@ -333,3 +397,53 @@ PORT=3001
 - Verify DATABASE_URL in .env
 - Ensure database server is running
 - Check firewall settings
+
+**nizzy CLI issues**
+```bash title="Terminal"
+# Reinstall CLI dependencies
+pnpm install --force
+
+# Check nizzy is available
+pnpm nizzy --help
+
+# Clear nizzy cache
+pnpm nizzy clean
+```
+
+**Docker services not starting**
+```bash title="Terminal"
+# Check Docker service status
+docker-compose -f docker-compose.db.yaml ps
+
+# View service logs
+docker-compose -f docker-compose.db.yaml logs
+
+# Restart services
+docker-compose -f docker-compose.db.yaml restart
+```
+
+**Port conflicts**
+```bash title="Check which process is using a port"
+# macOS/Linux
+lsof -i :3000
+lsof -i :8787
+
+# Windows
+netstat -ano | findstr :3000
+```
+
+**Build errors**
+```bash title="Terminal"
+# Clear all caches and reinstall
+rm -rf node_modules
+rm -rf .next
+rm pnpm-lock.yaml
+pnpm install
+
+# Check turbo cache
+pnpm turbo clean
+```
+
+<Callout type="tip">
+**Still having issues?** Check the [GitHub Issues](https://github.com/Mail-0/Zero/issues) for similar problems or create a new issue with your error details.
+</Callout>

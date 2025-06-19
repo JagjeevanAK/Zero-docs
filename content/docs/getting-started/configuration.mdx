@@ -17,13 +17,23 @@ The primary configuration is handled through environment variables and configura
 </Callout>
 
 <Files>
-  <Folder name="config" defaultOpen>
-    <File name=".env" />
-    <File name="package.json" />
-    <File name="tsconfig.json" />
-    <File name="tailwind.config.ts" />
-    <File name="vite.config.ts" />
-    <File name="eslint.config.mjs" />
+  <Folder name="Zero/" description="Project root" defaultOpen>
+    <File name=".env.example" description="Environment variables template" />
+    <File name="package.json" description="Main package configuration" />
+    <File name="pnpm-workspace.yaml" description="pnpm workspace configuration" />
+    <File name="turbo.json" description="Turborepo configuration" />
+    <File name="tsconfig.json" description="TypeScript configuration" />
+    <File name="eslint.config.mjs" description="ESLint configuration" />
+    <File name="docker-compose.db.yaml" description="Database services" />
+    <Folder name="apps/mail/" description="Frontend app">
+      <File name="tailwind.config.ts" />
+      <File name="vite.config.ts" />
+      <File name="react-router.config.ts" />
+    </Folder>
+    <Folder name="apps/server/" description="Backend app">
+      <File name="drizzle.config.ts" />
+      <File name="wrangler.jsonc" />
+    </Folder>
   </Folder>
 </Files>
 
@@ -32,29 +42,87 @@ The primary configuration is handled through environment variables and configura
 ```bash title=".env Configuration"
 # Application Configuration
 NODE_ENV=development
-PORT=3000
-APP_URL=http://localhost:3000
-APP_NAME="Zero Email Client"
+VITE_PUBLIC_APP_URL=http://localhost:3000
+VITE_PUBLIC_BACKEND_URL=http://localhost:8787
 
-# Database Configuration
-DATABASE_URL=sqlite:./data/db.sqlite
+# Database Configuration  
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/zerodotemail"
 
 # Authentication Configuration
-BETTER_AUTH_SECRET=your-super-secret-key-here
+BETTER_AUTH_SECRET=my-better-auth-secret
 BETTER_AUTH_URL=http://localhost:3000
+COOKIE_DOMAIN="localhost"
 
-# Email Provider Configuration
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
+# OAuth Configuration
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
 
-# Feature Flags
-ENABLE_AI_FEATURES=true
-ENABLE_VOICE_FEATURES=true
-ENABLE_REAL_TIME_COLLABORATION=true
+# Redis/Valkey Configuration
+REDIS_URL="http://localhost:8079"
+REDIS_TOKEN="upstash-local-token"
+
+# Email Service Configuration
+RESEND_API_KEY=your-resend-api-key
+
+# AI Configuration
+OPENAI_API_KEY=your-openai-api-key
+PERPLEXITY_API_KEY=your-perplexity-api-key
+AI_SYSTEM_PROMPT=""
+
+# Security
+AUTUMN_SECRET_KEY=your-autumn-secret-key
+
+# SMS/Voice Configuration (Optional)
+TWILIO_ACCOUNT_SID=your-twilio-sid
+TWILIO_AUTH_TOKEN=your-twilio-token
+TWILIO_PHONE_NUMBER=your-twilio-phone
 ```
+
+<Callout type="warning">
+**Important**: Replace all placeholder values with your actual credentials. Use `openssl rand -hex 32` to generate secure secret keys.
+</Callout>
+
+## Port Configuration
+
+Zero Email Client uses multiple services running on different ports:
+
+<Tabs items={['Development', 'Production']}>
+  <Tab value="Development">
+    ```bash title="Development Ports"
+    # Frontend (React Router with Vite)
+    http://localhost:3000
+    
+    # Backend API (Cloudflare Workers)
+    http://localhost:8787
+    
+    # Database Studio (Drizzle)
+    http://localhost:4983
+    
+    # Redis/Valkey (Docker)
+    http://localhost:8079
+    
+    # PostgreSQL (Docker)
+    localhost:5432
+    ```
+  </Tab>
+  <Tab value="Production">
+    ```bash title="Production URLs"
+    # Frontend
+    https://0.email
+    
+    # Backend API
+    https://api.0.email
+    
+    # Staging
+    https://staging.0.email (Frontend)
+    https://sapi.0.email (Backend)
+    ```
+  </Tab>
+</Tabs>
+
+<Callout type="info">
+**Port Conflicts**: If any ports are already in use, you can modify them in the respective configuration files or environment variables.
+</Callout>
 
 ## Application Configuration
 

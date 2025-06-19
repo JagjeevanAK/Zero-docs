@@ -59,8 +59,8 @@ The architecture follows a microservices pattern with clear separation of concer
     <Cards>
       <Card title="React 19" description="UI library with latest features and concurrent rendering" />
       <Card title="TypeScript" description="Type-safe JavaScript with enhanced developer experience" />
-      <Card title="Vite" description="Lightning-fast build tool and development server" />
-      <Card title="React Router" description="Declarative client-side routing solution" />
+      <Card title="Vite" description="Underlying build tool and development server (integrated with React Router)" />
+      <Card title="React Router v7" description="Full-stack web framework with Vite integration for routing and SSR" />
       <Card title="Tailwind CSS" description="Utility-first CSS framework for rapid styling" />
       <Card title="Zustand" description="Lightweight state management without boilerplate" />
       <Card title="Radix UI" description="Accessible, unstyled component primitives" />
@@ -75,7 +75,7 @@ The architecture follows a microservices pattern with clear separation of concer
       <Card title="TypeScript" description="Type-safe backend development" />
       <Card title="Drizzle ORM" description="Type-safe database toolkit with excellent TypeScript support" />
       <Card title="Better Auth" description="Modern authentication and authorization library" />
-      <Card title="SQLite/PostgreSQL" description="Flexible database options for different deployment scenarios" />
+      <Card title="PostgreSQL" description="Primary database with Docker Compose setup for local development" />
       <Card title="Cloudflare Workers" description="Edge computing platform for global distribution" />
     </Cards>
   </Tab>
@@ -85,9 +85,10 @@ The architecture follows a microservices pattern with clear separation of concer
     <Cards>
       <Card title="Docker" description="Containerization for consistent deployments" />
       <Card title="Cloudflare" description="CDN, DNS, and edge services" />
-      <Card title="Redis" description="In-memory caching and session storage" />
-      <Card title="SMTP/IMAP" description="Email protocol implementation" />
-      <Card title="WebSockets" description="Real-time bidirectional communication" />
+      <Card title="Redis/Valkey" description="In-memory caching, session storage, and real-time features" />
+      <Card title="Cloudflare Durable Objects" description="Stateful serverless objects for real-time collaboration" />
+      <Card title="Cloudflare Vectorize" description="Vector database for AI-powered search and recommendations" />
+      <Card title="Cloudflare AI" description="AI inference at the edge for smart email features" />
     </Cards>
   </Tab>
 </Tabs>
@@ -98,24 +99,66 @@ The architecture follows a microservices pattern with clear separation of concer
 The system is organized into distinct components, each handling specific aspects of the email client functionality.
 </Callout>
 
+## Project Structure
+
+<Callout type="info">
+Zero follows a monorepo structure with clear separation between applications, packages, and configuration.
+</Callout>
+
+<Files>
+  <Folder name="Zero/" description="Project root" defaultOpen>
+    <Folder name="apps/" description="Applications">
+      <Folder name="docs/" description="Documentation site (Fumadocs)" />
+      <Folder name="mail/" description="Frontend email client (React Router v7)" />
+      <Folder name="server/" description="Backend API server (Cloudflare Workers)" />
+    </Folder>
+    <Folder name="packages/" description="Shared packages">
+      <Folder name="cli/" description="nizzy CLI tool" />
+      <Folder name="eslint-config/" description="Shared ESLint configuration" />
+      <Folder name="tailwind-config/" description="Shared Tailwind configuration" />
+      <Folder name="tsconfig/" description="Shared TypeScript configuration" />
+    </Folder>
+    <Folder name="docker/" description="Docker configurations">
+      <Folder name="app/" description="Application Docker files" />
+      <Folder name="db/" description="Database Docker files" />
+    </Folder>
+    <Folder name="scripts/" description="Build and utility scripts" />
+    <Folder name="public/" description="Static assets" />
+    <File name="docker-compose.db.yaml" description="Development database services" />
+    <File name="turbo.json" description="Turborepo build orchestration" />
+    <File name="pnpm-workspace.yaml" description="pnpm workspace configuration" />
+  </Folder>
+</Files>
+
 ### 1. Frontend Architecture
 <Files>
   <Folder name="apps/mail/" defaultOpen>
-    <Folder name="app/">
-      <Folder name="(auth)/" />
-      <Folder name="(routes)/" />
-      <Folder name="home/" />
+    <Folder name="app/" description="React Router v7 application structure">
+      <Folder name="(auth)/" description="Authentication routes" />
+      <Folder name="(full-width)/" description="Full-width layout routes" />
+      <Folder name="(routes)/" description="Standard layout routes" />
+      <Folder name="home/" description="Home page components" />
+      <Folder name="meta-files/" description="Meta and SEO files" />
+      <Folder name="og-api/" description="Open Graph API routes" />
+      <File name="entry.client.tsx" />
+      <File name="entry.server.tsx" />
+      <File name="root.tsx" />
+      <File name="routes.ts" />
     </Folder>
-    <Folder name="components/">
-      <Folder name="ui/" />
-      <Folder name="mail/" />
-      <Folder name="providers/" />
-      <Folder name="icons/" />
+    <Folder name="components/" description="Reusable UI components">
+      <Folder name="ui/" description="Base UI components" />
+      <Folder name="mail/" description="Email-specific components" />
+      <Folder name="icons/" description="Icon components" />
+      <Folder name="providers/" description="Context providers" />
+      <Folder name="settings/" description="Settings components" />
+      <Folder name="home/" description="Home page components" />
     </Folder>
-    <Folder name="hooks/" />
-    <Folder name="lib/" />
-    <Folder name="store/" />
-    <Folder name="types/" />
+    <Folder name="hooks/" description="Custom React hooks" />
+    <Folder name="lib/" description="Utility libraries and helpers" />
+    <Folder name="store/" description="Zustand state management" />
+    <Folder name="types/" description="TypeScript type definitions" />
+    <Folder name="providers/" description="React context providers" />
+    <Folder name="config/" description="Configuration files" />
   </Folder>
 </Files>
 
@@ -198,17 +241,28 @@ The backend follows a service-oriented architecture with clear separation betwee
 
 <Files>
   <Folder name="apps/server/" defaultOpen>
-    <Folder name="src/">
-      <Folder name="routes/" />
-      <Folder name="services/" />
-      <Folder name="db/" />
-      <Folder name="auth/" />
-      <Folder name="mail/" />
-      <Folder name="ai/" />
-      <Folder name="utils/" />
+    <Folder name="src/" description="Source code">
+      <File name="main.ts" description="Main entry point" />
+      <File name="ctx.ts" description="Context configuration" />
+      <File name="pipelines.ts" description="Processing pipelines" />
+      <Folder name="routes/" description="API route handlers">
+        <Folder name="agent/" description="AI agent routes" />
+        <File name="ai.ts" description="AI-related endpoints" />
+        <File name="autumn.ts" description="Autumn service routes" />
+        <File name="chat.ts" description="Chat functionality" />
+      </Folder>
+      <Folder name="services/" description="Business logic services">
+        <Folder name="mcp-service/" description="Model Context Protocol service" />
+        <Folder name="call-service/" description="Voice/call handling service" />
+        <File name="writing-style-service.ts" description="Writing style analysis" />
+      </Folder>
+      <Folder name="db/" description="Database schemas and migrations" />
+      <Folder name="lib/" description="Utility libraries" />
+      <Folder name="trpc/" description="tRPC API definitions" />
+      <File name="types.ts" description="TypeScript type definitions" />
     </Folder>
-    <Folder name="drizzle/" />
-    <Folder name="workers/" />
+    <File name="drizzle.config.ts" description="Database configuration" />
+    <File name="wrangler.jsonc" description="Cloudflare Workers configuration" />
   </Folder>
 </Files>
 

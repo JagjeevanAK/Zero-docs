@@ -57,50 +57,162 @@ wrangler login
 ```
 #### Configure wrangler.jsonc
 
-```bash title="Terminal"
-cat > wrangler.jsonc << EOF
+Zero uses separate Cloudflare Workers for different services. The main configurations are:
+
+**Server Worker (apps/server/wrangler.jsonc)**
+```jsonc title="Server Configuration"
 {
-  "name": "zero-email-client",
-  "main": "dist/worker.js",
-  "compatibility_date": "2024-01-15",
-  "node_compat": true,
-  "vars": {
-    "NODE_ENV": "production"
-  },
-  "secrets": [
-    "DATABASE_URL",
-    "BETTER_AUTH_SECRET",
-    "OPENAI_API_KEY"
-  ],
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "zero-production",
-      "database_id": "your-d1-database-id"
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "zero-server",
+  "compatibility_date": "2025-05-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "src/main.ts",
+  "env": {
+    "production": {
+      "ai": {
+        "binding": "AI"
+      },
+      "vectorize": [
+        {
+          "binding": "VECTORIZE",
+          "index_name": "threads-vector"
+        },
+        {
+          "binding": "VECTORIZE_MESSAGE", 
+          "index_name": "messages-vector"
+        }
+      ],
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "ZERO_AGENT",
+            "class_name": "ZeroAgent"
+          },
+          {
+            "name": "ZERO_MCP",
+            "class_name": "ZeroMCP"
+          },
+          {
+            "name": "ZERO_DB",
+            "class_name": "ZeroDB"
+          },
+          {
+            "class_name": "DurableMailbox",
+            "name": "DURABLE_MAILBOX"
+          }
+        ]
+      }
     }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "STORAGE",
-      "bucket_name": "zero-attachments"
-    }
-  ]
+  }
 }
-EOF
 ```
+
+**Mail Worker (apps/mail/wrangler.jsonc)**
+```jsonc title="Mail Configuration"
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "zero",
+  "compatibility_date": "2025-05-01", 
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./worker.ts",
+  "env": {
+    "production": {
+      "vars": {
+        "VITE_PUBLIC_BACKEND_URL": "https://api.0.email",
+        "VITE_PUBLIC_APP_URL": "https://0.email"
+      }
+    }
+  }
+}
+```
+
+<Callout type="warning">
+**Complex Configuration**: Zero uses advanced Cloudflare features including Durable Objects, Vectorize, AI, and Queues. Ensure your Cloudflare account has access to these features.
+</Callout>
+
+<Callout type="warning">
+**Additional Advanced Features**: The production configuration also includes:
+- **Workflows**: For complex business process automation
+- **Hyperdrive**: For database connection pooling and acceleration  
+- **KV Namespaces**: For distributed key-value storage
+- **Scheduled Events**: For background job processing
+</Callout>
+
+#### Required Cloudflare Services
+
+<Tabs items={['Vectorize', 'Durable Objects', 'AI', 'Queues']}>
+  <Tab value="Vectorize">
+    ```bash title="Create Vectorize Indexes"
+    # Create vector indexes for AI features
+    wrangler vectorize create threads-vector --dimensions=1536 --metric=cosine
+    wrangler vectorize create messages-vector --dimensions=1536 --metric=cosine
+    ```
+  </Tab>
+  <Tab value="Durable Objects">
+    ```bash title="Deploy Durable Objects"
+    # Durable Objects are deployed automatically with the worker
+    # Ensure these classes are available:
+    # - ZeroAgent
+    # - ZeroMCP  
+    # - ZeroDB
+    # - DurableMailbox
+    ```
+  </Tab>
+  <Tab value="AI">
+    ```bash title="AI Models"
+    # Zero uses Cloudflare AI models
+    # Available models:
+    # - @cf/meta/llama-3.1-70b-instruct
+    # - @cf/openai/whisper
+    # - Various embedding models
+    ```
+  </Tab>
+  <Tab value="Queues">
+    ```bash title="Create Queues"
+    wrangler queues create thread-queue
+    wrangler queues create subscribe-queue
+    wrangler queues create digest-queue
+    wrangler queues create ai-queue
+    ```
+  </Tab>
+</Tabs>
 
 #### Environment Variables
 
-```bash title=".env"
-# Set production secrets
+```bash title="Production Secrets"
+# Core Configuration
 wrangler secret put DATABASE_URL
 wrangler secret put BETTER_AUTH_SECRET
+wrangler secret put COOKIE_DOMAIN
+
+# OAuth Configuration  
+wrangler secret put GOOGLE_CLIENT_ID
+wrangler secret put GOOGLE_CLIENT_SECRET
+
+# AI Services
 wrangler secret put OPENAI_API_KEY
-wrangler secret put SMTP_HOST
-wrangler secret put SMTP_PORT
-wrangler secret put SMTP_USER
-wrangler secret put SMTP_PASS
+wrangler secret put PERPLEXITY_API_KEY
+wrangler secret put AI_SYSTEM_PROMPT
+
+# Email Services
+wrangler secret put RESEND_API_KEY
+
+# Redis/Caching
+wrangler secret put REDIS_URL
+wrangler secret put REDIS_TOKEN
+
+# Security
+wrangler secret put AUTUMN_SECRET_KEY
+
+# SMS/Voice (Optional)
+wrangler secret put TWILIO_ACCOUNT_SID
+wrangler secret put TWILIO_AUTH_TOKEN
+wrangler secret put TWILIO_PHONE_NUMBER
 ```
+
+<Callout type="info">
+**Environment Variables**: These secrets are set per environment (staging/production) and are encrypted by Cloudflare.
+</Callout>
 
 #### Deploy
 

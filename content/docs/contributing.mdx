@@ -9,6 +9,7 @@ import { Steps, Step } from 'fumadocs-ui/components/steps';
 import { CodeBlock } from 'fumadocs-ui/components/codeblock';
 import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
 import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+import { Files, File, Folder } from 'fumadocs-ui/components/files';
 
 <Callout type="tip">
 We welcome contributions to Zero Email Client! This guide will help you get started with contributing to the project, whether you're fixing bugs, adding features, or improving documentation.
@@ -481,16 +482,20 @@ test.describe('Email Workflow', () => {
 
 ### Documentation Structure
 
-```
-docs/
-├── getting-started/     # Setup and installation
-├── architecture/        # System design
-├── api/                # API documentation
-├── components/         # Component library
-├── deployment/         # Deployment guides
-├── contributing/       # This guide
-└── examples/           # Usage examples
-```
+<Files>
+  <Folder name="docs/" defaultOpen>
+    <File name="index.mdx" description="Main documentation homepage" />
+    <Folder name="getting-started/" description="Setup and installation">
+      <File name="index.mdx" />
+      <File name="installation.mdx" />
+      <File name="configuration.mdx" />
+    </Folder>
+    <File name="architecture.mdx" description="System design and technical overview" />
+    <File name="MCP.mdx" description="Model Context Protocol server documentation" />
+    <File name="deployment.mdx" description="Production deployment guides" />
+    <File name="contributing.mdx" description="Development workflow and contribution guidelines" />
+  </Folder>
+</Files>
 
 ### Adding New Documentation
 
