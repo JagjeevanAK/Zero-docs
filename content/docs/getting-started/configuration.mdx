@@ -253,14 +253,14 @@ SMTP_PASS=your-password
 
 ### Local Storage (Default)
 
-```bash
+```bash title="Local Storage Configuration"
 STORAGE_PROVIDER=local
 STORAGE_LOCAL_PATH=./uploads
 ```
 
 ### Cloudflare R2
 
-```bash
+```bash title="Cloudflare R2 Configuration"
 STORAGE_PROVIDER=r2
 CLOUDFLARE_R2_ACCESS_KEY_ID=your-access-key
 CLOUDFLARE_R2_SECRET_ACCESS_KEY=your-secret-key
@@ -270,7 +270,7 @@ CLOUDFLARE_R2_ENDPOINT=https://your-account-id.r2.cloudflarestorage.com
 
 ### AWS S3
 
-```bash
+```bash title="AWS S3 Configuration"
 STORAGE_PROVIDER=s3
 AWS_ACCESS_KEY_ID=your-access-key
 AWS_SECRET_ACCESS_KEY=your-secret-key
@@ -282,7 +282,7 @@ AWS_S3_BUCKET=your-bucket-name
 
 ### OpenAI Integration
 
-```bash
+```bash title="OpenAI Configuration"
 # OpenAI Configuration
 OPENAI_API_KEY=your-openai-api-key
 OPENAI_MODEL=gpt-4
@@ -296,8 +296,7 @@ ENABLE_AI_CATEGORIZATION=true
 
 ### Custom AI Provider
 
-```typescript
-// lib/ai.ts
+```typescript title="lib/ai.ts"
 export const aiConfig = {
   provider: 'openai', // 'openai', 'anthropic', 'custom'
   
@@ -319,8 +318,7 @@ export const aiConfig = {
 
 ### Caching
 
-```typescript
-// lib/cache.ts
+```typescript title="lib/cache.ts"
 export const cacheConfig = {
   // Redis configuration (optional)
   redis: {
@@ -338,8 +336,7 @@ export const cacheConfig = {
 
 ### Rate Limiting
 
-```typescript
-// lib/rate-limit.ts
+```typescript title="lib/rate-limit.ts"
 export const rateLimitConfig = {
   // API rate limits
   api: {
@@ -359,8 +356,7 @@ export const rateLimitConfig = {
 
 ### CORS Settings
 
-```typescript
-// lib/cors.ts
+```typescript title="lib/cors.ts"
 export const corsConfig = {
   origin: process.env.NODE_ENV === 'production' 
     ? ['https://yourdomain.com']
@@ -373,8 +369,7 @@ export const corsConfig = {
 
 ### Content Security Policy
 
-```typescript
-// lib/security.ts
+```typescript title="lib/security.ts"
 export const cspConfig = {
   directives: {
     defaultSrc: ["'self'"],
@@ -391,8 +386,7 @@ export const cspConfig = {
 
 ### Hot Module Replacement
 
-```typescript
-// vite.config.ts
+```typescript title="vite.config.ts"
 export default defineConfig({
   server: {
     hmr: {
@@ -407,7 +401,7 @@ export default defineConfig({
 
 ### Debug Settings
 
-```bash
+```bash title="Debug Configuration"
 # Debug configuration
 DEBUG=zero:*
 LOG_LEVEL=debug
@@ -418,7 +412,7 @@ ENABLE_QUERY_LOGGING=true
 
 ### Environment Variables for Production
 
-```bash
+```bash title="Production Environment Variables"
 NODE_ENV=production
 PORT=3000
 
@@ -436,7 +430,7 @@ TRUST_PROXY=true
 
 ### Docker Configuration
 
-```dockerfile
+```dockerfile title="Dockerfile"
 # Dockerfile production optimizations
 FROM node:20-alpine AS production
 
@@ -454,8 +448,7 @@ CMD ["node", "dist/server.js"]
 
 ## Configuration Validation
 
-```typescript
-// lib/config-validation.ts
+```typescript title="lib/config-validation.ts"
 import { z } from 'zod'
 
 const configSchema = z.object({
