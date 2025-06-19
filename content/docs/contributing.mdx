@@ -277,22 +277,22 @@ EmailList.displayName = 'EmailList'
     We use Tailwind CSS for utility-first styling with consistent design patterns.
     </Callout>
     
-    ```css title="Tailwind Best Practices"
-/* Use Tailwind utility classes */
-.email-item {
-  @apply flex items-center gap-3 p-3 border-b border-border 
-         cursor-pointer hover:bg-accent/50 transition-colors;
-}
+```css title="Tailwind Best Practices"
+  /* Use Tailwind utility classes */
+  .email-item {
+    @apply flex items-center gap-3 p-3 border-b border-border 
+          cursor-pointer hover:bg-accent/50 transition-colors;
+  }
 
-.email-item--selected {
-  @apply bg-accent;
-}
+  .email-item--selected {
+    @apply bg-accent;
+  }
 
-/* Avoid magic numbers, use design tokens */
-.email-avatar {
-  @apply h-8 w-8; /* Instead of h-[32px] w-[32px] */
-}
-```
+  /* Avoid magic numbers, use design tokens */
+  .email-avatar {
+    @apply h-8 w-8; /* Instead of h-[32px] w-[32px] */
+  }
+``` 
   </Tab>
   <Tab value="Component Styling">
     ### Component Styling Patterns
