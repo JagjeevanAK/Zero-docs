@@ -1,13 +1,66 @@
 ---
-title: Hello World
-description: Your first document
+title: "Zero Client"
+description: "Modern, secure email client built with React, TypeScript, and cutting-edge web technologies."
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Steps, Step } from 'fumadocs-ui/components/steps';
+import { CodeBlock } from 'fumadocs-ui/components/codeblock';
 
-## What is Next?
+Zero is a comprehensive email management platform that combines the power of modern web technologies with intuitive user experience. Built with React, TypeScript, and a robust backend architecture, Zero offers enterprise-grade email management with consumer-friendly design.
+
+## Key Features
 
 <Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.vercel.app" />
+  <Card title="Modern UI/UX" description="Clean, responsive interface built with React and Tailwind CSS" />
+  <Card title="Real-time Collaboration" description="Live email composition and sharing" />
+  <Card title="AI-Powered Features" description="Smart email categorization and assistance" />
+  <Card title="Multi-platform Support" description="Web, desktop, and mobile compatibility" />
+  <Card title="Advanced Security" description="End-to-end encryption and secure authentication" />
+  <Card title="Customizable Workspace" description="Personalized email organization and workflow" />
 </Cards>
+
+## Quick Start
+
+<Steps>
+  <Step>Clone the repository</Step>
+  <Step>Install dependencies</Step>
+  <Step>Start development server</Step>
+</Steps>
+
+```bash title="Terminal Commands"
+# Clone the repository
+git clone https://github.com/your-org/zero.git
+
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+```
+
+## Documentation Structure
+
+<Cards>
+  <Card href="./getting-started/" title="Getting Started" description="Installation, setup, and basic configuration" />
+  <Card href="./architecture/" title="Architecture" description="System design and technical overview" />
+  <Card href="./components/" title="Components" description="UI components and their usage" />
+  <Card href="./api/" title="API Reference" description="Backend API documentation" />
+  <Card href="./deployment/" title="Deployment" description="Production deployment guides" />
+  <Card href="./contributing/" title="Contributing" description="Development workflow and contribution guidelines" />
+</Cards>
+
+## Technology Stack
+
+- **Frontend**: React 19, TypeScript, Tailwind CSS, Vite
+- **Backend**: Node.js, Drizzle ORM, SQLite/PostgreSQL
+- **Authentication**: Better Auth
+- **Email Processing**: Custom email parsing and rendering
+- **Deployment**: Cloudflare Workers, Docker
+
+## Community
+
+- **GitHub**: [Repository](https://github.com/Mail-0/zero)
+- **Issues**: [Bug Reports & Feature Requests](https://github.com/Mail-0/zero/issues)
+- **Discussions**: [Community Forum](https://github.com/Mail-0/zero/discussions)
+
