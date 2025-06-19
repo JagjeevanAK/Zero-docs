@@ -344,8 +344,6 @@ pnpm test:e2e
 
 # Run specific test file
 pnpm test src/components/mail/email-list.test.tsx
-```
-
 # Run tests in watch mode
 pnpm test:watch
 
@@ -363,8 +361,7 @@ pnpm test src/components/mail/email-list.test.tsx
 
 #### Component Tests
 
-```tsx
-// __tests__/components/email-list.test.tsx
+```tsx title="__tests__/components/email-list.test.tsx"
 import { render, screen, fireEvent } from '@testing-library/react'
 import { EmailList } from '../email-list'
 import { mockEmails } from '@/test-utils/mock-data'
