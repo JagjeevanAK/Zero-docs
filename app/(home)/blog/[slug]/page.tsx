@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
-import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { blog } from '@/lib/source';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import { getMDXComponents } from '@/mdx-components';
